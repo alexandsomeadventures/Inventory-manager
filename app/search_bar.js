@@ -8,11 +8,11 @@ import SearchIcon from '@mui/icons-material/Search'
 import DirectionsIcon from '@mui/icons-material/Directions'
 import {useRef} from 'react'
 import "@/app/page"
-export default function CustomizedInputBase() {
+export default function CustomizedInputBase({ onSearch }) {
   const inputRef = useRef(null);
   const handleSearch = () => {
     const searchValue = inputRef.current.value;
-    searchInventory(searchValue);
+    onSearch(searchValue)
   };
   return (
     <Paper

@@ -134,7 +134,7 @@ export default function Home() {
       <Button variant="contained" onClick={handleOpen}>
         Add New Item
       </Button>
-      <CustomizedInputBase/>
+      <CustomizedInputBase onSearch={searchInventory} />
       <Box border={'1px solid #333'}>
         <Box
           width="800px"
