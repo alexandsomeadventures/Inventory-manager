@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Box, Stack, Typography, Button, Modal, TextField } from '@mui/material'
 import { firestore } from './firebase'
+import CustomizedInputBase from './search_bar'
 import {
   collection,
   doc,
@@ -11,6 +12,7 @@ import {
   setDoc,
   deleteDoc,
   getDoc,
+  where
 } from 'firebase/firestore'
 
 const style = {
@@ -31,6 +33,7 @@ const style = {
 export default function Home() {
   
   const [inventory, setInventory] = useState([])
+  const [filteredInventory, setFilteredInventory] = useState([])
   const [open, setOpen] = useState(false)
   const [itemName, setItemName] = useState('')
 
@@ -68,8 +71,18 @@ export default function Home() {
       inventoryList.push({ name: doc.id, ...doc.data() })
     })
     setInventory(inventoryList)
+    setFilteredInventory(inventoryList)
   }
   
+  const searchInventory = async (searchWord) => {
+    if (searchWord === '') {
+      setFilteredInventory(inventory)
+    } else {
+      const filtered = inventory.filter(doc => doc.name.startsWith(searchWord))
+      setFilteredInventory(filtered)
+    }
+  }
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
@@ -121,6 +134,7 @@ export default function Home() {
       <Button variant="contained" onClick={handleOpen}>
         Add New Item
       </Button>
+      <CustomizedInputBase/>
       <Box border={'1px solid #333'}>
         <Box
           width="800px"
@@ -134,8 +148,8 @@ export default function Home() {
             Inventory Items
           </Typography>
         </Box>
-        <Stack width="800px" height="300px" spacing={2} overflow={'auto'}>
-          {inventory.map(({name, quantity}) => (
+        <Stack width="800px" height="300px" spacing={2} overflow={'auto'} id="items-stack">
+          {filteredInventory.map(({name, quantity}) => (
             <Box
               key={name}
               width="100%"
