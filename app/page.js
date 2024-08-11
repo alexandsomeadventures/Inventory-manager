@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import CameraComponent from './camera' 
 import { Box, Stack, Typography, Button, Modal, TextField } from '@mui/material'
 import { firestore } from './firebase'
 import CustomizedInputBase from './search_bar'
@@ -11,8 +12,7 @@ import {
   query,
   setDoc,
   deleteDoc,
-  getDoc,
-  where
+  getDoc
 } from 'firebase/firestore'
 
 const style = {
@@ -134,6 +134,11 @@ export default function Home() {
       <Button variant="contained" onClick={handleOpen}>
         Add New Item
       </Button>
+      <Stack direction="row" spacing={2}>
+ 
+      <CameraComponent />
+      </Stack>
+      
       <CustomizedInputBase onSearch={searchInventory} />
       <Box border={'1px solid #333'}>
         <Box
