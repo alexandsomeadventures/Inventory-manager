@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import {Button} from "@mui/material";
-import { Height, Widgets } from "@mui/icons-material";
 const CameraComponent = () => {
   const camera = useRef(null);
   const [image, setImage] = useState(null);
