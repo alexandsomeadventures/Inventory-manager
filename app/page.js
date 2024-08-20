@@ -89,7 +89,11 @@ export default function Home() {
   const handleClose = () => setOpen(false)
 
   const fetchResponse = async (image) => {
- 
+    if (!image) {
+      await document.getElementById('takePhoto').click()
+      await fetchResponse(imageData)
+      return
+    }
     const res = await fetch('/api/openai', {
       method: 'POST',
       headers: {

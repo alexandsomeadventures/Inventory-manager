@@ -16,9 +16,9 @@ const CameraComponent = ({updateImageData}) => {
 
   return (
     <div style={{ position: 'relative' }}>
-      {cameraActive && <Camera ref={camera} aspectRatio={16 / 9}/>}
+      {cameraActive && <Camera ref={camera} aspectRatio={1 / 1}/>}
       <Button variant='contained' id='takePhoto' onClick={async () => {setCameraActive(true); if (camera.current) {setImage(await camera.current.takePhoto()); updateImageData(image);}}}>Take photo</Button>
-      <Button variant='contained' style={{ marginLeft: '16px' }} onClick={() => {setCameraActive(false); setImage(null)}}>Deactivate</Button>
+      <Button variant='contained' style={{ marginLeft: '16px' }} onClick={() => {setCameraActive(false);}}>Deactivate</Button>
       <img style={imageStyles} src={image} />
     </div>
   );
