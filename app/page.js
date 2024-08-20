@@ -30,9 +30,7 @@ const style = {
   gap: 3,
 }
 
-export const classifyAndAddItem = async (imageData) => {
-  addItem(imageData);
-} 
+
 
 export default function Home() {
   
@@ -40,7 +38,7 @@ export default function Home() {
   const [filteredInventory, setFilteredInventory] = useState([])
   const [open, setOpen] = useState(false)
   const [itemName, setItemName] = useState('')
-
+  var imageData = null
   const addItem = async (item) => {
     const docRef = doc(collection(firestore, 'inventory'), item)
     const docSnap = await getDoc(docRef)
@@ -90,6 +88,28 @@ export default function Home() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
+  const fetchResponse = async (image) => {
+    try{
+    const res = await fetch('/api/openai', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ image }),
+    });
+    const data = await res.json();
+    console.log(data);
+    await addItem(data)
+  } catch (error) {
+    document.getElementById('takePhoto').click()
+    await fetchResponse(imageData)
+  }
+  };
+
+  const updateImageData = (data) => {
+    imageData = data
+  }
+
   useEffect(() => {
     updateInventory()
   }, [])
@@ -135,12 +155,12 @@ export default function Home() {
           </Stack>
         </Box>
       </Modal>
+      <Stack direction="row" spacing={2}>
       <Button variant="contained" onClick={handleOpen}>
         Add New Item
       </Button>
-      <Stack direction="row" spacing={2}>
- 
-      <CameraComponent />
+      <Button variant='contained' onClick={async ()=> {await fetchResponse(imageData)}}>Classify</Button>
+      <CameraComponent updateImageData={updateImageData}/>
       </Stack>
       
       <CustomizedInputBase onSearch={searchInventory} />

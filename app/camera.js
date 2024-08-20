@@ -1,8 +1,7 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import {Button} from "@mui/material";
-import {classifyAndAddItem} from  "./page"
-const CameraComponent = () => {
+const CameraComponent = ({updateImageData}) => {
   const camera = useRef(null);
   const [image, setImage] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
@@ -14,26 +13,11 @@ const CameraComponent = () => {
     left: '-550px'
   };
   
-  const fetchResponse = async (image) => {
-    const res = await fetch('/api/openai', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ image }),
-    });
-    const data = await res.json();
-    classifyAndAddItem(data);
-  };
 
-  const handlePhoto = async () => {
-    fetchResponse(image);
-  }
   return (
     <div style={{ position: 'relative' }}>
       {cameraActive && <Camera ref={camera} aspectRatio={16 / 9}/>}
-      <Button variant='contained' style={{ marginRight: '16px' }} onClick={()=> {handlePhoto()}}>Classify</Button>
-      <Button variant='contained' onClick={() => {setCameraActive(true); if (camera.current) {setImage(camera.current.takePhoto());}}}>Take photo</Button>
+      <Button variant='contained' id='takePhoto' onClick={async () => {setCameraActive(true); if (camera.current) {setImage(await camera.current.takePhoto()); updateImageData(image);}}}>Take photo</Button>
       <Button variant='contained' style={{ marginLeft: '16px' }} onClick={() => {setCameraActive(false); setImage(null)}}>Deactivate</Button>
       <img style={imageStyles} src={image} />
     </div>

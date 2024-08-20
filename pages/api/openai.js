@@ -3,6 +3,8 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 const openai =  new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 export default async function handler(req, res) {
+    if (req.method === 'POST') {
+    try {
     const {image} = req.body
     const response = await openai.chat.completions.create(
         {
@@ -35,4 +37,12 @@ export default async function handler(req, res) {
         }
     )
     res.status(200).json(response.choices[0].message.content)
+    }
+    catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    } else {
+      res.status(405).json({ error: 'Method Not Allowed' });
+    }    
 }
