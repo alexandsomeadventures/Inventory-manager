@@ -98,8 +98,8 @@ export default function Home() {
       body: JSON.stringify({ image }),
     });
     const data = await res.json();
-    console.log(data);
-    await addItem(data)
+    // typeof data === 'string' ? console.log("YES IT IS STRING"): console.log("NO IT IS NOT STRING");
+    await addItem(data);
   
   };
 
@@ -151,15 +151,18 @@ export default function Home() {
             </Button>
           </Stack>
         </Box>
-      </Modal>
+      </Modal>      
+      
+      <Stack direction="row" spacing={2}>
+      <CameraComponent updateImageData={updateImageData}/>
+      </Stack>
       <Stack direction="row" spacing={2}>
       <Button variant="contained" onClick={handleOpen}>
         Add New Item
       </Button>
       <Button variant='contained' onClick={async ()=> {await fetchResponse(imageData)}}>Classify</Button>
-      <CameraComponent updateImageData={updateImageData}/>
       </Stack>
-      
+
       <CustomizedInputBase onSearch={searchInventory} />
       <Box border={'1px solid #333'}>
         <Box
