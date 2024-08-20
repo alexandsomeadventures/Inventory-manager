@@ -40,7 +40,7 @@ export default function Home() {
   const [itemName, setItemName] = useState('')
   var imageData = null
   const addItem = async (item) => {
-    const docRef = doc(collection(firestore, 'inventory'), item)
+    const docRef = doc(collection(firestore, 'inventory'), String(item))
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
       const { quantity } = docSnap.data()
@@ -89,7 +89,7 @@ export default function Home() {
   const handleClose = () => setOpen(false)
 
   const fetchResponse = async (image) => {
-    try{
+ 
     const res = await fetch('/api/openai', {
       method: 'POST',
       headers: {
@@ -100,10 +100,7 @@ export default function Home() {
     const data = await res.json();
     console.log(data);
     await addItem(data)
-  } catch (error) {
-    document.getElementById('takePhoto').click()
-    await fetchResponse(imageData)
-  }
+  
   };
 
   const updateImageData = (data) => {
