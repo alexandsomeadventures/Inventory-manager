@@ -12,11 +12,28 @@ const CameraComponent = () => {
     top: '0px',
     left: '-550px'
   };
+  
+  const fetchResponse = async (image) => {
+    const res = await fetch('/api/openai', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ image }),
+    });
+    const data = await res.json();
+    console.log(data.choices[0]);
+  };
+
+  const handlePhoto = async () => {
+    fetchResponse(image);
+  }
   return (
     <div style={{ position: 'relative' }}>
-      {cameraActive && <Camera ref={camera} aspectRatio={4 / 3}/>}
+      {cameraActive && <Camera ref={camera} aspectRatio={16 / 9}/>}
+      <Button variant='contained' style={{ marginRight: '16px' }} onClick={()=> {handlePhoto()}}>Classify</Button>
       <Button variant='contained' onClick={() => {setCameraActive(true); if (camera.current) {setImage(camera.current.takePhoto());}}}>Take photo</Button>
-      <Button variant='contained' style={{ marginLeft: '16px' }} onClick={() => {setCameraActive(false)}}>Deactivate</Button>
+      <Button variant='contained' style={{ marginLeft: '16px' }} onClick={() => {setCameraActive(false); setImage(null)}}>Deactivate</Button>
       <img style={imageStyles} src={image} />
     </div>
   );
