@@ -30,6 +30,10 @@ const style = {
   gap: 3,
 }
 
+export const classifyAndAddItem = async (imageData) => {
+  addItem(imageData);
+} 
+
 export default function Home() {
   
   const [inventory, setInventory] = useState([])

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import {Button} from "@mui/material";
+import {classifyAndAddItem} from  "./page"
 const CameraComponent = () => {
   const camera = useRef(null);
   const [image, setImage] = useState(null);
@@ -22,7 +23,7 @@ const CameraComponent = () => {
       body: JSON.stringify({ image }),
     });
     const data = await res.json();
-    console.log(data.choices[0]);
+    classifyAndAddItem(data);
   };
 
   const handlePhoto = async () => {
