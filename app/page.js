@@ -89,11 +89,6 @@ export default function Home() {
   const handleClose = () => setOpen(false)
 
   const fetchResponse = async (image) => {
-    if (!image) {
-      await document.getElementById('takePhoto').click()
-      await fetchResponse(imageData)
-      return
-    }
     const res = await fetch('/api/openai', {
       method: 'POST',
       headers: {
@@ -102,7 +97,7 @@ export default function Home() {
       body: JSON.stringify({ image }),
     });
     const data = await res.json();
-    // typeof data === 'string' ? console.log("YES IT IS STRING"): console.log("NO IT IS NOT STRING");
+    console.log(data)
     await addItem(data);
   
   };
@@ -164,7 +159,7 @@ export default function Home() {
       <Button variant="contained" onClick={handleOpen}>
         Add New Item
       </Button>
-      <Button variant='contained' onClick={async ()=> {await fetchResponse(imageData)}}>Classify</Button>
+      <Button variant='contained' id="classifyPhoto" onClick={async ()=> {await fetchResponse(imageData)}}>Classify</Button>
       </Stack>
 
       <CustomizedInputBase onSearch={searchInventory} />
